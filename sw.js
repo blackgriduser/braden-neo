@@ -1,5 +1,5 @@
 // Cache hors ligne. Changer VERSION à chaque mise à jour de index.html.
-const VERSION = "braden-qd-v2";
+const VERSION = "braden-qd-v3";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 
 self.addEventListener("install", e => {

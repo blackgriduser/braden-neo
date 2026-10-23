@@ -141,51 +141,52 @@ h3{font-size:1.1rem;margin:26px 0 8px}
   mq.addEventListener&&mq.addEventListener("change",paint);
 })();
 const Q=[
- {k:"mob",t:"Mobilité",h:"Capacité de changer la position du corps de façon autonome.",o:[
+ {k:"mob",t:"Mobilité",h:"Capacité de changer position du corps de façon autonome",o:[
   ["Pas limitée","Non applicable r/a stade de développement des pt de l'unité"],
   ["Limitée","Fait des changements légers et peu fréquents de la position de ses membres.","score le plus fréquent"],
   ["Complètement immobile","Extrême prématuré, pt avec drains thoraciques sous VOHF, curarisé ou sédaté"]]},
- {k:"sens",t:"Perception sensorielle",h:"Capacité de réagir aux stimuli et à la douleur selon le stade de développement du pt.",o:[
-  ["Non altérée","Patient non sédaté qui réagit aux stimuli et à la douleur"],
-  ["Altérée","Non sédaté ou légèrement sédaté, sans atteinte neurologique, mais réagissant peu à la douleur et aux stimuli"],
-  ["Complètement altérée","Très sédaté ou atteinte neurologique, incapable de réagir lors des stimuli, ou en présence de douleur"]]},
+ {k:"sens",t:"Perception sensorielle",h:"Capacité de réagir aux stimuli et à la douleur selon le stade de développement du pt",o:[
+  ["Non altérée","Un patient non sédaté qui réagit aux stimuli et à la douleur"],
+  ["Altérée","Un patient non sédaté ou légèrement sédaté, sans atteinte neurologique, mais réagissant peu à la douleur et aux stimuli"],
+  ["Complètement altérée","Un patient très sédaté ou présentant une atteinte neurologique, incapable de réagir lors des stimuli, ou en présence de douleur"]]},
  {k:"fric",t:"Friction-cisaillement",h:"",o:[
-  ["Aucun problème","Peut facilement être soulevé"],
-  ["Problème potentiel","La peau frotte parfois sur la surface (lorsqu'il s'agite par exemple)"],
-  ["Problème","Ne peut être bien soulevé lors des déplacements dû à de multiples appareillages"]]},
- {k:"nut",t:"Nutrition",h:"Diète usuelle selon l'âge — évaluer l'alimentation sur les 3 derniers jours consécutifs.",o:[
-  ["Adéquate","Exclusivement nourri au sein ou au biberon, avec du lait non enrichi"],
-  ["Limitée","Apports liquidiens adéquats selon son poids, mais lait enrichi ou complété par soluté ou administré par gavage"],
-  ["Pauvre","Apports liquidiens inférieurs à son poids et son âge, croissance restreinte ou perte de poids"]]},
+  ["Aucun problème","Un patient qui peut facilement être soulevé"],
+  ["Problème potentiel","Un patient dont la peau frotte parfois sur la surface (lorsqu'il s'agite par exemple)"],
+  ["Problème","Un patient qui ne peut être bien soulevé lors des déplacements dû à de multiples appareillages"]]},
+ {k:"nut",t:"Nutrition",h:"Diète usuelle selon l'âge - Évaluer l'alimentation sur les 3 derniers jours consécutifs",o:[
+  ["Adéquate","Un patient exclusivement nourri au sein ou au biberon, avec du lait non enrichi."],
+  ["Limitée","Un patient dont les apports liquidiens sont adéquats selon son poids, mais dont le lait est enrichi ou complété par soluté ou administré par gavage."],
+  ["Pauvre","Un patient dont les apports liquidiens sont inférieurs à son poids et son âge, dont la croissance est restreinte ou en perte de poids."]]},
  {k:"perf",t:"Perfusion tissulaire",h:"",o:[
   ["Adéquate","TA normale pour l'âge, Sat ≥ 95 % et hémoglobine normale"],
   ["Problème potentiel","TA normale pour l'âge avec Sat < 95 % OU hémoglobine < 100 g/L","score le plus fréquent"],
-  ["Problème","Hypotension pour l'âge OU instabilité hémodynamique"]]},
- {k:"dev",t:"Nombre de dispositifs médicaux",h:"1 point par dispositif diagnostique ou thérapeutique en contact avec ou traversant la peau/muqueuses (max 8). Les pansements ne comptent pas.",devices:true},
- {k:"rep",t:"Repositionnement / protection cutanée",h:"Le dispositif peut-il être déplacé pour diminuer la pression continue, et la peau est-elle protégée sous le dispositif?",o:[
+  ["Problème","Hypotension pour l'âge OU instabilité hémodynamique."]]},
+ {k:"dev",t:"Nombre de dispositifs médicaux",h:"Attribuer un point pour tout dispositif diagnostique ou thérapeutique actuellement en contact ou traversant la peau ou les muqueuses du patient. Les pansements ne sont pas comptés dans les dispositifs médicaux. Attribuer 1 point pour chaque dispositif jusqu'à 8 (score maximum 8 points).",devices:true},
+ {k:"rep",t:"Repositionnement / protection cutanée",h:"Est-ce que le dispositif peut être déplacé afin de diminuer la pression en continu qu'il effectue sur la peau du nouveau-né et est-ce que la peau est protégée sous le dispositif médical",o:[
   ["Adéquate","Pas de dispositifs"],
-  ["Problème potentiel","Tous les dispositifs peuvent être repositionnés OU la peau sous chaque dispositif est protégée (duoderm)"],
-  ["Problème","Un/des dispositifs ne peuvent être repositionnés OU la peau sous un dispositif n'est pas protégée (ex. plaie sous un sac collecteur malgré les précautions)"]]}
+  ["Problème potentiel","Tous les dispositifs médicaux peuvent être repositionnés OU la peau sous chaque dispositif est protégée (duoderm)."],
+  ["Problème","Un/les dispositifs médicaux ne peuvent pas être repositionnés OU la peau sous chaque dispositif n'est pas protégée. Ex : Plaie qui se développe sous un sac collecteur malgré les précautions prises (le sac doit tout de même être réinstallé au même endroit)"]]}
 ];
+// Ordre et libellés identiques à la carte. max = nombre que le compteur permet (total plafonné à 8).
 const DEV=[
- ["temp","Sonde de température cutanée ou rectale",1],
- ["elec","Électrodes de moniteur cardiorespiratoire","1 pt pour l'ensemble",1],
- ["sat","Saturomètre","1 pt par saturomètre",4],
- ["tet","Tube endotrachéal",1],
- ["nas","Masque ou canule nasale",1],
- ["ali","Sonde d'alimentation",1],
- ["dra","Sonde de drainage",1],
- ["sto","Sac collecteur de stomie",1],
- ["gas","Bouton de gastrostomie",1],
- ["uri","Sonde urinaire",1],
- ["drn","Drains","1 pt par drain",4],
- ["cvp","Cathéter veineux périphérique","1 pt par voie",4],
- ["cci","CCIVP",1],
- ["cvo","Cathéter veineux ombilical (CVO)","1 pt par voie",3],
- ["cao","Cathéter artériel ombilical (CAO)",1],
- ["art","Cathéter artériel",1],
- ["eeg","EEG","1 pt pour l'ensemble",1]
-].map(d=>typeof d[2]==="number"?{id:d[0],n:d[1],note:"",max:d[2]}:{id:d[0],n:d[1],note:d[2],max:d[3]});
+ {id:"temp",n:"Sonde de température cutanée ou rectale",max:1},
+ {id:"elec",n:"Électrodes de moniteur cardiorespiratoire",note:"1 point pour l'ensemble",max:1},
+ {id:"sat",n:"Saturomètre",note:"1 point par saturomètre en place",max:8},
+ {id:"tet",n:"Tube endotrachéal",max:1},
+ {id:"nas",n:"Masque ou canule nasale",max:1},
+ {id:"ali",n:"Sonde d'alimentation",max:1},
+ {id:"dra",n:"Sonde de drainage",max:1},
+ {id:"sto",n:"Sac collecteur de stomie",max:1},
+ {id:"gas",n:"Bouton de gastrostomie",max:1},
+ {id:"uri",n:"Sonde urinaire",max:1},
+ {id:"drn",n:"Drains",max:8},
+ {id:"cvp",n:"Cathéter veineux périphérique",note:"1 point par voie",max:8,s:"CVP"},
+ {id:"cci",n:"CCIVP",max:1},
+ {id:"cvo",n:"Cathéters ombilicaux · veineux (CVO)",note:"1 point par voie",max:8,s:"CVO"},
+ {id:"cao",n:"Cathéters ombilicaux · artériel (CAO)",note:"1 point par voie",max:8,s:"CAO"},
+ {id:"art",n:"Cathéter artériel",max:1},
+ {id:"eeg",n:"EEG",note:"1 point pour l'ensemble",max:1}
+].map(d=>({note:"",...d}));
 const STRAT={
  mob:["Changement de position minimalement q 3-4 h","Enseigner à la famille un bon positionnement physiologique et son importance dans la prévention des plaies de pression"],
  sens:["Contrôle de l'humidité : changement de couche minimal q 3-4 h, nettoyer au savon doux, assécher avant de remettre la couche","Surveiller les sites à risque de plaie DIE; enseigner à la famille à porter attention à la peau (portage, soins, boire…)","Pâte d'Ihle au siège en prévention","Hygiène stricte (contrôle des infections)","Couche, vêtements et tuque pas trop petits","Pince à cordon sans pression sur l'abdomen si applicable"],
@@ -312,7 +313,7 @@ function result(){
     const v=q.devices?ans.dev:ans[q.k];
     const lab=q.devices?`${devRaw()} dispositif${devRaw()>1?"s":""}`:q.o[v][0];
     return `<tr><td>${q.t}<br><small style="color:var(--muted)">${lab}</small> <a data-go="${i}">modifier</a></td><td>${v}${q.devices?" / 8":" / 2"}</td></tr>`}).join("");
-  const why=s=>typeof s==="string"?"":s.if.filter(id=>devc[id]>0).map(id=>{const d=DEV.find(x=>x.id===id);return `${d.n.replace(/ \(.*\)/,"").replace(/^Cathéter veineux ombilical$/,"CVO")}${devc[id]>1?" ×"+devc[id]:""}`}).join(", ");
+  const why=s=>typeof s==="string"?"":s.if.filter(id=>devc[id]>0).map(id=>{const d=DEV.find(x=>x.id===id);return `${d.s||d.n}${devc[id]>1?" ×"+devc[id]:""}`}).join(", ");
   const devList=DEV.filter(d=>devc[d.id]>0).map(d=>`${d.n}${devc[d.id]>1?" ×"+devc[d.id]:""}`).join(", ");
   const strat=Q.filter(q=>(q.devices?ans.dev:ans[q.k])>0).map(q=>{
     const v=q.devices?ans.dev:ans[q.k];
