@@ -182,8 +182,7 @@ const DEV=[
  {id:"drn",n:"Drains",max:8},
  {id:"cvp",n:"Cathéter veineux périphérique",note:"1 point par voie",max:8,s:"CVP"},
  {id:"cci",n:"CCIVP",max:1},
- {id:"cvo",n:"Cathéters ombilicaux · veineux (CVO)",note:"1 point par voie",max:8,s:"CVO"},
- {id:"cao",n:"Cathéters ombilicaux · artériel (CAO)",note:"1 point par voie",max:8,s:"CAO"},
+ {id:"omb",n:"Cathéters ombilicaux",note:"1 point par voie",max:2},
  {id:"art",n:"Cathéter artériel",max:1},
  {id:"eeg",n:"EEG",note:"1 point pour l'ensemble",max:1}
 ].map(d=>({note:"",...d}));
@@ -195,7 +194,7 @@ const STRAT={
  perf:["Aviser l'équipe médicale pour la prise en charge de l'état hémodynamique"],
  dev:["Retirer le plus rapidement possible les dispositifs qui ne servent plus, en accord avec l'équipe médicale"],
  rep:[
-  {t:"Couper les ailettes du pont de fixation au CVO (pas de duoderm sous les ailettes)",if:["cvo"]},
+  {t:"Couper les ailettes du pont de fixation au CVO (pas de duoderm sous les ailettes)",if:["omb"]},
   {t:"Changement masque/canule nasale (VNI) q 3 h avec l'inhalothérapeute",if:["nas"]},
   {t:"Masser nez et pont nasal lors du changement de canule/masque (VNI)",if:["nas"]},
   {t:"Surveillance du site IV q 1 h + PRN et du membre (souvent sur une planchette)",if:["cvp"]},
