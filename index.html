@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4a3d7a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Braden Néo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Braden Néo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: one question per screen, sticky progress header, large tap targets for bedside use */
+:root{
+  --bg:#f5f4f8; --surface:#ffffff; --ink:#221d33; --muted:#625b78; --line:#dcd8e6;
+  --accent:#4a3d7a; --accent-soft:#ece8f6; --on-accent:#ffffff;
+  --ok:#2f7a4f; --warn:#a86a12; --crit:#b23a3a;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#16131f; --surface:#211d2e; --ink:#ece9f4; --muted:#a8a1bd; --line:#363049;
+  --accent:#a99be0; --accent-soft:#2c2640; --on-accent:#16131f;
+  --ok:#6cc391; --warn:#e0a54a; --crit:#ec7b7b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#16131f; --surface:#211d2e; --ink:#ece9f4; --muted:#a8a1bd; --line:#363049;
+  --accent:#a99be0; --accent-soft:#2c2640; --on-accent:#16131f;
+  --ok:#6cc391; --warn:#e0a54a; --crit:#ec7b7b; color-scheme:dark}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:17px;line-height:1.45}
+*{box-sizing:border-box}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:14px 12px;z-index:5;display:grid;gap:10px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+h1{font-size:1.05rem;margin:0;letter-spacing:.02em}
+.running{font-family:var(--f-num);font-variant-numeric:tabular-nums;color:var(--muted);font-size:.9rem}
+.running b{color:var(--ink)}
+.steps{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.steps span{height:5px;border-radius:3px;background:var(--line)}
+.steps span.done{background:var(--accent)}
+.steps span.cur{background:var(--accent);opacity:.45}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:18px 0 4px}
+h2{font-size:1.6rem;margin:0 0 4px;text-wrap:balance;line-height:1.15}
+.hint{color:var(--muted);margin:0 0 18px;font-size:.95rem}
+.opts{display:grid;gap:10px}
+.opt{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;text-align:left;width:100%;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:14px;font:inherit;color:inherit;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt:focus-visible,.btn:focus-visible,.step-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.pts{font-family:var(--f-num);font-weight:600;font-size:1.3rem;width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.opt.sel .pts{background:var(--accent);color:var(--on-accent)}
+.opt strong{display:block;margin-bottom:2px}
+.opt small{color:var(--muted);font-size:.92rem;display:block}
+.tag{display:inline-block;font-size:.72rem;border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-left:6px;color:var(--muted);vertical-align:middle}
+.dev{display:grid;gap:6px;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:6px 14px}
+.dev-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.dev-row:last-child{border-bottom:0}
+.dev-row div{min-width:0}
+.dev-row small{display:block;color:var(--muted);font-size:.82rem}
+.stepper{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.step-btn{width:38px;height:38px;border-radius:9px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:600 1.2rem var(--f-num);cursor:pointer}
+.step-btn:disabled{opacity:.35;cursor:default}
+.cnt{font-family:var(--f-num);font-variant-numeric:tabular-nums;width:22px;text-align:center;font-weight:600}
+.devtotal{display:flex;justify-content:space-between;align-items:center;margin:14px 0 0;padding:12px 14px;border-radius:12px;background:var(--accent-soft)}
+.devtotal span:last-child{font-family:var(--f-num);font-weight:600;font-size:1.2rem}
+.cap{color:var(--warn);font-size:.88rem;margin-top:6px}
+.nav{display:flex;gap:10px;margin-top:22px}
+.btn{flex:1;font:700 1rem var(--f-body);padding:14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.result{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:20px;margin-top:18px;display:grid;gap:6px}
+.big{font-family:var(--f-num);font-size:3.4rem;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.big small{font-size:1.2rem;color:var(--muted)}
+.risk{display:inline-block;justify-self:start;padding:4px 12px;border-radius:999px;font-weight:700;font-size:.9rem;border:1.5px solid currentColor}
+.risk.hi{color:var(--crit)} .risk.lo{color:var(--ok)}
+.note{color:var(--muted);font-size:.82rem}
+table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.95rem}
+td{padding:9px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+td:last-child{text-align:right;font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+td a{color:var(--accent);cursor:pointer;text-decoration:underline;font-size:.82rem;margin-left:6px}
+h3{font-size:1.1rem;margin:26px 0 8px}
+.strat{display:grid;gap:12px}
+.strat section{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.strat h4{margin:0 0 6px;font-size:.95rem}
+.strat ul{margin:0;padding-left:18px;color:var(--ink);font-size:.93rem;display:grid;gap:4px}
+.babies{display:grid;gap:10px}
+.baby{display:grid;grid-template-columns:70px 1fr auto;gap:8px 12px;align-items:center;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.bl{font-weight:700}
+.baby input{font:600 1.05rem var(--f-num);width:100%;min-width:0;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink)}
+.baby input:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+.badge{font-size:.85rem;color:var(--muted);white-space:nowrap}
+.badge.hi{color:var(--crit)} .badge.lo{color:var(--ok)}
+.badge b{font-family:var(--f-num);font-size:1.05rem}
+.bt{grid-column:2/-1;color:var(--muted);font-size:.78rem;margin-top:-4px}
+.bact{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.btn.sm{flex:0 1 auto;padding:9px 14px;font-size:.92rem;border-radius:9px}
+.btn.ghost{background:transparent;color:var(--muted);margin-left:auto}
+.nums{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.num{aspect-ratio:1;max-width:100%;font:600 1.8rem var(--f-num);border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.num:hover{border-color:var(--accent)}
+.num.sel{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.num:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.basis{margin:0 0 8px;font-size:.85rem;color:var(--muted)}
+.basis b{font-family:var(--f-num);color:var(--ink)}
+.why{display:inline-block;margin-left:6px;font-size:.75rem;color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:0 7px;vertical-align:middle}
+.src{color:var(--muted);font-size:.75rem;margin-top:24px}
+@media (prefers-reduced-motion:no-preference){.q{animation:in .18s ease-out}@keyframes in{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="top"><h1 id="who">Braden Néo</h1><span class="running" id="runwrap">Total <b id="run">0</b> / 20</span></div>
+    <div class="steps" id="steps"></div>
+  </header>
+  <main id="app"></main>
+</div>
+
+<script>
+const Q=[
+ {k:"mob",t:"Mobilité",h:"Capacité de changer la position du corps de façon autonome.",o:[
+  ["Pas limitée","Non applicable r/a stade de développement des pt de l'unité"],
+  ["Limitée","Fait des changements légers et peu fréquents de la position de ses membres.","score le plus fréquent"],
+  ["Complètement immobile","Extrême prématuré, pt avec drains thoraciques sous VOHF, curarisé ou sédaté"]]},
+ {k:"sens",t:"Perception sensorielle",h:"Capacité de réagir aux stimuli et à la douleur selon le stade de développement du pt.",o:[
+  ["Non altérée","Patient non sédaté qui réagit aux stimuli et à la douleur"],
+  ["Altérée","Non sédaté ou légèrement sédaté, sans atteinte neurologique, mais réagissant peu à la douleur et aux stimuli"],
+  ["Complètement altérée","Très sédaté ou atteinte neurologique, incapable de réagir lors des stimuli, ou en présence de douleur"]]},
+ {k:"fric",t:"Friction-cisaillement",h:"",o:[
+  ["Aucun problème","Peut facilement être soulevé"],
+  ["Problème potentiel","La peau frotte parfois sur la surface (lorsqu'il s'agite par exemple)"],
+  ["Problème","Ne peut être bien soulevé lors des déplacements dû à de multiples appareillages"]]},
+ {k:"nut",t:"Nutrition",h:"Diète usuelle selon l'âge — évaluer l'alimentation sur les 3 derniers jours consécutifs.",o:[
+  ["Adéquate","Exclusivement nourri au sein ou au biberon, avec du lait non enrichi"],
+  ["Limitée","Apports liquidiens adéquats selon son poids, mais lait enrichi ou complété par soluté ou administré par gavage"],
+  ["Pauvre","Apports liquidiens inférieurs à son poids et son âge, croissance restreinte ou perte de poids"]]},
+ {k:"perf",t:"Perfusion tissulaire",h:"",o:[
+  ["Adéquate","TA normale pour l'âge, Sat ≥ 95 % et hémoglobine normale"],
+  ["Problème potentiel","TA normale pour l'âge avec Sat < 95 % OU hémoglobine < 100 g/L","score le plus fréquent"],
+  ["Problème","Hypotension pour l'âge OU instabilité hémodynamique"]]},
+ {k:"dev",t:"Nombre de dispositifs médicaux",h:"1 point par dispositif diagnostique ou thérapeutique en contact avec ou traversant la peau/muqueuses (max 8). Les pansements ne comptent pas.",devices:true},
+ {k:"rep",t:"Repositionnement / protection cutanée",h:"Le dispositif peut-il être déplacé pour diminuer la pression continue, et la peau est-elle protégée sous le dispositif?",o:[
+  ["Adéquate","Pas de dispositifs"],
+  ["Problème potentiel","Tous les dispositifs peuvent être repositionnés OU la peau sous chaque dispositif est protégée (duoderm)"],
+  ["Problème","Un/des dispositifs ne peuvent être repositionnés OU la peau sous un dispositif n'est pas protégée (ex. plaie sous un sac collecteur malgré les précautions)"]]}
+];
+const DEV=[
+ ["temp","Sonde de température cutanée ou rectale",1],
+ ["elec","Électrodes de moniteur cardiorespiratoire","1 pt pour l'ensemble",1],
+ ["sat","Saturomètre","1 pt par saturomètre",4],
+ ["tet","Tube endotrachéal",1],
+ ["nas","Masque ou canule nasale",1],
+ ["ali","Sonde d'alimentation",1],
+ ["dra","Sonde de drainage",1],
+ ["sto","Sac collecteur de stomie",1],
+ ["gas","Bouton de gastrostomie",1],
+ ["uri","Sonde urinaire",1],
+ ["drn","Drains","1 pt par drain",4],
+ ["cvp","Cathéter veineux périphérique","1 pt par voie",4],
+ ["cci","CCIVP",1],
+ ["cvo","Cathéter veineux ombilical (CVO)","1 pt par voie",3],
+ ["cao","Cathéter artériel ombilical (CAO)",1],
+ ["art","Cathéter artériel",1],
+ ["eeg","EEG","1 pt pour l'ensemble",1]
+].map(d=>typeof d[2]==="number"?{id:d[0],n:d[1],note:"",max:d[2]}:{id:d[0],n:d[1],note:d[2],max:d[3]});
+const STRAT={
+ mob:["Changement de position minimalement q 3-4 h","Enseigner à la famille un bon positionnement physiologique et son importance dans la prévention des plaies de pression"],
+ sens:["Contrôle de l'humidité : changement de couche minimal q 3-4 h, nettoyer au savon doux, assécher avant de remettre la couche","Surveiller les sites à risque de plaie DIE; enseigner à la famille à porter attention à la peau (portage, soins, boire…)","Pâte d'Ihle au siège en prévention","Hygiène stricte (contrôle des infections)","Couche, vêtements et tuque pas trop petits","Pince à cordon sans pression sur l'abdomen si applicable"],
+ fric:["Solution de désinfection adaptée à l'âge de gestation","Limiter l'adhésif (proscrire le diachylon); compresses ou coban si l'adhésif n'est pas nécessaire","Humidifier l'adhésif à l'eau physiologique avant le retrait","Surface de lit sans plis; vêtements, tuque et couche bien installés","Encourager le peau à peau sans bijoux, vêtements ni soutien-gorge","Inclinaison de 15° max"],
+ nut:["Respecter les besoins liquidiens du bébé","Augmenter les calories pour préserver les protéines"],
+ perf:["Aviser l'équipe médicale pour la prise en charge de l'état hémodynamique"],
+ dev:["Retirer le plus rapidement possible les dispositifs qui ne servent plus, en accord avec l'équipe médicale"],
+ rep:[
+  {t:"Couper les ailettes du pont de fixation au CVO (pas de duoderm sous les ailettes)",if:["cvo"]},
+  {t:"Changement masque/canule nasale (VNI) q 3 h avec l'inhalothérapeute",if:["nas"]},
+  {t:"Masser nez et pont nasal lors du changement de canule/masque (VNI)",if:["nas"]},
+  {t:"Surveillance du site IV q 1 h + PRN et du membre (souvent sur une planchette)",if:["cvp"]},
+  {t:"Alterner les sites d'oxymétrie q 3 h",if:["sat"]},
+  {t:"Protéger la peau quand le dispositif doit y être (ex. TNG : duoderm; sous l'adhésif du sac collecteur)",if:["ali","uri","sto"]},
+  "Déplacer les dispositifs en contact avec la peau q 3 h",
+  "Soutenir les tubes hors du bébé (sans contact avec la peau)"]
+};
+const applies=s=>typeof s==="string"||s.if.some(id=>devc[id]>0);
+const txt=s=>typeof s==="string"?s:s.t;
+const N=5, KEY="bradenqd-v1";
+const zeroDev=()=>Object.fromEntries(DEV.map(d=>[d.id,0]));
+const blank=()=>({room:"",ans:{},devc:zeroDev(),score:null,time:null});
+let B=Array.from({length:N},blank);
+try{const s=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(s)&&s.length===N)B=s.map(b=>({...blank(),...b,devc:{...zeroDev(),...b.devc}}))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(B))}catch(e){}};
+let active=null, ans={}, devc={}, cur=0;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let count=null;
+try{const c=+localStorage.getItem(KEY+"-n");if(c>=1&&c<=N)count=c}catch(e){}
+const saveN=()=>{try{count?localStorage.setItem(KEY+"-n",count):localStorage.removeItem(KEY+"-n")}catch(e){}};
+function ask(){
+  active=null;
+  $("#who").textContent="Braden Néo";
+  $("#runwrap").hidden=true;$("#steps").hidden=true;
+  $("#app").innerHTML=`<div class="q"><p class="eyebrow">Début de quart</p><h2>Combien de bébés aujourd'hui?</h2>
+    <p class="hint">Tu pourras changer ce nombre plus tard.</p>
+    <div class="nums">${[1,2,3,4,5].map(n=>`<button class="num ${count===n?'sel':''}" data-n="${n}">${n}</button>`).join("")}</div></div>`;
+  document.querySelectorAll("[data-n]").forEach(b=>b.onclick=()=>{
+    count=+b.dataset.n;for(let i=count;i<N;i++)B[i]=blank();save();saveN();home();
+    setTimeout(()=>{const f=$("#room0");f&&!f.value&&f.focus()},50)});
+}
+function home(){
+  if(!count) return ask();
+  active=null;
+  $("#who").textContent="Braden Néo";
+  $("#runwrap").hidden=true;$("#steps").hidden=true;
+  $("#app").innerHTML=`<div class="q"><p class="eyebrow">Patients</p><h2>${count} bébé${count>1?"s":""} aujourd'hui</h2>
+    <p class="hint">Inscrire le numéro de chambre seulement, puis lancer l'évaluation.</p>
+    <div class="babies">${B.slice(0,count).map((b,i)=>{
+      const st=b.score==null?`<span class="badge">Non évalué</span>`:`<span class="badge ${b.score>=13?'hi':'lo'}"><b>${b.score}</b>/20 · ${b.score>=13?"à risque":"faible"}</span>`;
+      return `<div class="baby"><label for="room${i}" class="bl">Bébé ${i+1}</label>
+        <input id="room${i}" data-r="${i}" inputmode="numeric" autocomplete="off" placeholder="Chambre" maxlength="10" value="${esc(b.room)}">
+        ${st}${b.time?`<small class="bt">${b.time}</small>`:""}
+        <div class="bact"><button class="btn primary sm" data-e="${i}" ${b.room.trim()?"":"disabled"}>${b.score==null?"Évaluer":"Réévaluer"}</button>
+        ${b.score!=null?`<button class="btn sm" data-v="${i}">Voir</button>`:""}
+        ${b.room||b.score!=null?`<button class="btn sm ghost" data-c="${i}" aria-label="Effacer bébé ${i+1}">Effacer</button>`:""}</div></div>`}).join("")}</div>
+    <div class="nav"><button class="btn" id="chg">Changer le nombre</button><button class="btn" id="newday">Nouveau quart</button></div></div>`;
+  $("#chg").onclick=ask;
+  $("#newday").onclick=e=>{const b=e.currentTarget;
+    if(b.dataset.armed){B=Array.from({length:N},blank);count=null;save();saveN();ask()}
+    else{b.dataset.armed=1;b.textContent="Tout effacer?"}};
+  document.querySelectorAll("[data-r]").forEach(inp=>inp.oninput=()=>{
+    const i=+inp.dataset.r;B[i].room=inp.value;save();
+    document.querySelector(`[data-e="${i}"]`).disabled=!inp.value.trim()});
+  document.querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>open(+b.dataset.e,true));
+  document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>open(+b.dataset.v,false));
+  document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.c;
+    if(b.dataset.armed){B[i]=blank();save();home()}else{b.dataset.armed=1;b.textContent="Confirmer?"}});
+}
+function open(i,fresh){
+  active=i;const b=B[i];
+  if(fresh){b.ans={};b.devc=zeroDev()}
+  ans=b.ans;devc=b.devc;cur=fresh?0:Q.length;
+  $("#who").textContent=`Chambre ${b.room.trim()}`;
+  $("#runwrap").hidden=false;$("#steps").hidden=false;
+  render();scrollTo(0,0);
+}
+const devRaw=()=>DEV.reduce((s,d)=>s+devc[d.id],0);
+const devScore=()=>Math.min(8,devRaw());
+const total=()=>Q.reduce((s,q)=>s+(q.devices?(ans.dev!=null?devScore():0):(ans[q.k]??0)),0);
+
+function stepsBar(){
+  $("#steps").innerHTML=Q.map((q,i)=>`<span class="${i<cur||cur===Q.length?'done':i===cur?'cur':''}"></span>`).join("");
+  $("#run").textContent=total();
+}
+function render(){
+  stepsBar();
+  if(cur>=Q.length) return result();
+  const q=Q[cur];
+  let body="";
+  if(q.devices){
+    body=`<div class="dev">${DEV.map(d=>`<div class="dev-row"><div>${d.n}${d.note?`<small>${d.note}</small>`:""}</div>
+      <div class="stepper"><button class="step-btn" data-d="${d.id}" data-v="-1" aria-label="Retirer ${d.n}" ${devc[d.id]===0?"disabled":""}>−</button>
+      <span class="cnt">${devc[d.id]}</span>
+      <button class="step-btn" data-d="${d.id}" data-v="1" aria-label="Ajouter ${d.n}" ${devc[d.id]>=d.max?"disabled":""}>+</button></div></div>`).join("")}</div>
+      <div class="devtotal"><span>Points dispositifs</span><span>${devScore()} / 8</span></div>
+      ${devRaw()>8?`<div class="cap">${devRaw()} dispositifs comptés — plafonné à 8 points.</div>`:""}`;
+  } else {
+    body=`<div class="opts">${q.o.map((o,i)=>`<button class="opt ${ans[q.k]===i?'sel':''}" data-i="${i}">
+      <span class="pts">${i}</span><span><strong>${o[0]}${o[2]?`<span class="tag">${o[2]}</span>`:""}</strong><small>${o[1]}</small></span></button>`).join("")}</div>`;
+  }
+  const ready=q.devices||ans[q.k]!=null;
+  $("#app").innerHTML=`<div class="q"><p class="eyebrow">Question ${cur+1} de ${Q.length}</p><h2>${q.t}</h2>${q.h?`<p class="hint">${q.h}</p>`:`<div style="height:12px"></div>`}
+    ${body}
+    <div class="nav"><button class="btn" id="prev">${cur===0?"Liste":"Précédent"}</button>
+    <button class="btn primary" id="next" ${ready?"":"disabled"}>${cur===Q.length-1?"Voir le score":"Suivant"}</button></div></div>`;
+  $("#prev").onclick=()=>{if(cur===0)return home();cur--;render();scrollTo(0,0)};
+  $("#next").onclick=()=>{
+    if(q.devices){ans.dev=devScore(); if(devRaw()===0) ans.rep=0;}
+    cur++; if(cur<Q.length&&Q[cur].k==="rep"&&devRaw()===0) cur++; // pas de dispositif → repositionnement = 0
+    render();scrollTo(0,0)};
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{ans[q.k]=+b.dataset.i;render();
+    setTimeout(()=>$("#next").click(),180)});
+  document.querySelectorAll(".step-btn").forEach(b=>b.onclick=()=>{
+    const d=DEV.find(x=>x.id===b.dataset.d);devc[d.id]=Math.max(0,Math.min(d.max,devc[d.id]+ +b.dataset.v));
+    ans.dev=devScore(); render();
+    const nb=document.querySelector(`[data-d="${d.id}"][data-v="${b.dataset.v}"]`); nb&&!nb.disabled&&nb.focus();});
+}
+function result(){
+  const t=total(), hi=t>=13;
+  const rows=Q.map((q,i)=>{
+    const v=q.devices?ans.dev:ans[q.k];
+    const lab=q.devices?`${devRaw()} dispositif${devRaw()>1?"s":""}`:q.o[v][0];
+    return `<tr><td>${q.t}<br><small style="color:var(--muted)">${lab}</small> <a data-go="${i}">modifier</a></td><td>${v}${q.devices?" / 8":" / 2"}</td></tr>`}).join("");
+  const why=s=>typeof s==="string"?"":s.if.filter(id=>devc[id]>0).map(id=>{const d=DEV.find(x=>x.id===id);return `${d.n.replace(/ \(.*\)/,"").replace(/^Cathéter veineux ombilical$/,"CVO")}${devc[id]>1?" ×"+devc[id]:""}`}).join(", ");
+  const devList=DEV.filter(d=>devc[d.id]>0).map(d=>`${d.n}${devc[d.id]>1?" ×"+devc[d.id]:""}`).join(", ");
+  const strat=Q.filter(q=>(q.devices?ans.dev:ans[q.k])>0).map(q=>{
+    const v=q.devices?ans.dev:ans[q.k];
+    const basis=q.devices?devList:q.o[v][0];
+    return `<section><h4>${q.t}</h4><p class="basis">Entré : <b>${v}</b> · ${basis}</p><ul>${STRAT[q.k].filter(applies).map(s=>{const w=why(s);return `<li>${txt(s)}${w?`<span class="why">${w}</span>`:""}</li>`}).join("")}</ul></section>`}).join("");
+  $("#app").innerHTML=`<div class="q"><div class="result">
+    <span class="eyebrow" style="margin:0">Score Braden QD</span>
+    <div class="big">${t}<small> / 20</small></div>
+    <span class="risk ${hi?'hi':'lo'}">${hi?"À risque de plaie de pression (≥ 13)":"Risque faible (< 13)"}</span>
+    <p class="note">Seuil de 13 selon l'étude de validation (Curley et al., 2018). Suivre le protocole de l'unité.</p>
+    <table>${rows}</table></div>
+    ${strat?`<h3>Stratégies préventives</h3><div class="strat">${strat}</div>`:""}
+    <div class="nav"><button class="btn" id="redo">Réévaluer</button><button class="btn primary" id="back">Liste des bébés</button></div>
+    <p class="src">Échelle de Braden QD — traduction de Curley M.A.Q. et al., J Pediatr 2018;192:189-95. Aide-mémoire CHU Ste-Justine (2021).</p></div>`;
+  document.querySelectorAll("[data-go]").forEach(a=>a.onclick=()=>{cur=+a.dataset.go;render();scrollTo(0,0)});
+  $("#redo").onclick=()=>open(active,true);
+  $("#back").onclick=()=>{home();scrollTo(0,0)};
+  const b=B[active];
+  if(b.score!==t||!b.time){b.score=t;b.time=new Date().toLocaleString("fr-CA",{dateStyle:"short",timeStyle:"short"});save()}
+}
+home();
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script>
+
+</body>
+</html>
